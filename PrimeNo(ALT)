@@ -5,18 +5,15 @@ if num == 1 :
 if num == 2 :
 	print ("O numero eh primo")
 for x in range(2, num):
-	indice = int(0)
 	print ("x: ", x)
 	for z in primo:
 		print ("primo: ", z)
 		if x % z == 0 and x != z:
 			print("pulando")
 			break
-		elif x!= z and primo.index(z) == indice:
+		elif x!= z and primo.index(z) == (len(primo)-1):
 			primo.append(x)
 			print("adicionando primo", x)
-			indice += 1
-		indice += 1
 	if num - (num-x) == num - 1: 
 		print ("O numero eh primo")
 		break
