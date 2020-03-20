@@ -2,6 +2,7 @@ import java.util.Scanner;
 import java.util.HashMap;
 public class Uva100 {
 public static void main (String[] args){
+	long startTime = System.nanoTime();
 	HashMap<Integer, Integer> numLen = new HashMap <Integer, Integer>();
 	Scanner scan = new Scanner(System.in);
 	while(scan.hasNext()){
@@ -55,6 +56,10 @@ public static void main (String[] args){
 			}
 		}
 		System.out.printf("%d %d %d\n",n1,n2, maxlen);
+
 	}
+		long endTime   = System.nanoTime();
+		double totalTime = (double)(endTime - startTime) / Math.pow(10, 9);
+		System.out.println(totalTime);	
 }
 }
