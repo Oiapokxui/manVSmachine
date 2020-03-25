@@ -39,23 +39,28 @@ public static String cypher(String normal, char[] uppercase, char[] lowercase, i
 	final char[] casoAlto = uppercase;
 	final char[] casoBaixo = lowercase;
 	String cA, cB, cACypher, cBCypher;
+	String msgAlterada = normal;
 
 	for (int v = 0; v < 26; v++){
-
+		System.out.println("\nAgora estamos falando de: " + casoBaixo[v] );
 		cA = Character.toString( casoAlto[v] );
 		cACypher = Character.toString( casoAlto[ ( v+keyindex ) % 26 ] );
 		cB = Character.toString( casoBaixo[v] );
-		cBCypher = Character.toString( casoBaixo[(v+keyindex) % 26 ] );
+		cBCypher = Character.toString( casoBaixo[ (v+keyindex) % 26 ] );
 		
 		if (normal.contains(cA)){
-			normal.replaceAll( cA , cACypher);
+			msgAlterada = msgAlterada.replaceAll( cA , cACypher);
+			System.out.printf("%s -> %s \n", cA , cACypher);
+			System.out.println(msgAlterada);
 		}	
 		else if (normal.contains( cB ) ) {
-			normal.replaceAll( cB, cBCypher );
+			msgAlterada = msgAlterada.replaceAll( cB, cBCypher );
+			System.out.printf("%s -> %s \n", cB , cBCypher);
+			System.out.println(msgAlterada);
 		}
 		
 	}
-	return normal ;
+	return msgAlterada ;
 }
 
 public static String uncypher(String normal, char[] uppercase, char[] lowercase, int keyindex){
@@ -63,23 +68,28 @@ public static String uncypher(String normal, char[] uppercase, char[] lowercase,
 	final char[] casoAlto = uppercase;
 	final char[] casoBaixo = lowercase;
 	String cA, cB, cAUncypher, cBUncypher;
+	String msgAlterada = normal;
 
-	for (int v = 0; v<= 26; v++){
-
+	for (int v = 0; v< 26; v++){
+		System.out.println("\nAgora estamos falando de: " + casoBaixo[v] );
 		cA = Character.toString(casoAlto[v]);
-		cAUncypher = Character.toString(casoAlto[(v-keyindex) % 26 ]);
+		cAUncypher = Character.toString( casoAlto[ ( v + (26 - keyindex)) % 26  ] ) ;
 		cB = Character.toString(casoBaixo[v]);
-		cBUncypher = Character.toString(casoBaixo[(v-keyindex) % 26 ]);
+		cBUncypher = Character.toString( casoBaixo[( v + (26 - keyindex)) % 26 ]);
 
-		if (normal.contains(cA)){
-			normal.replaceAll( cA , cAUncypher);
+		if (normal.contains( cA )){
+			msgAlterada = msgAlterada.replaceAll( cA , cAUncypher);
+			System.out.printf("%s -> %s \n", cA , cAUncypher);
+			System.out.println(msgAlterada);
 		}	
 		else if (normal.contains( cB ) ) {
-			normal.replaceAll( cB , cBUncypher);
+			msgAlterada = msgAlterada.replaceAll( cB , cBUncypher);
+			System.out.printf("%s -> %s \n", cB , cBUncypher);
+			System.out.println(msgAlterada);
 		}
 		
 	}
-	return normal ;
+	return msgAlterada ;
 }
 
 }
