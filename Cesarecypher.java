@@ -39,11 +39,11 @@ char[] lowercase, int keyindex)
 {
 	final char[] casoAlto = uppercase;
 	final char[] casoBaixo = lowercase;
+	// cA será uma letra maiúscula a ser trocada por cACypher, letra com a cifra aplicada
+	// cB será uma letra minúscula a ser trocada por cBCypher, letra com a cifra aplicada
 	String cA, cB, cACypher, cBCypher;
-	String msgAlterada = "";
-	for (int i = 0; i < normal.length(); i++){
-		System.out.println("\nAgora estamos falando de: " 
-			+ normal.charAt(i) );
+	int len = normal.length();
+	for (int i = 0; i < len; i++){
 		for (int v = 0; v < 26; v++){
 			cA = Character.toString( casoAlto[v] );
 			cACypher = Character.toString( casoAlto[ ( v+keyindex ) % 					26 ] );
@@ -51,29 +51,22 @@ char[] lowercase, int keyindex)
 			cBCypher = Character.toString( casoBaixo[ (v+keyindex) % 					26 ] );
 			
 			if (normal.charAt(i) == cA.charAt(0) ){
-				msgAlterada = msgAlterada.concat(cACypher);
-				System.out.printf("%s -> %s \n", cA , cACypher);
-				System.out.println(msgAlterada);
+				if (i == 0) normal = cACypher + normal.substring(1);
+				else if (i == (len-1)) normal = normal.substring(0, len - 1 ) + cACypher;
+				else normal = normal.substring(0, i) + cACypher + normal.substring(i+1);
 				break;
 			}	
 			else if (normal.charAt(i) == cB.charAt(0) ) {
-				msgAlterada = msgAlterada.concat(cBCypher);
-				System.out.printf("%s -> %s \n", cB , cBCypher);
-				System.out.println(msgAlterada);
+				if (i == 0) normal = cBCypher + normal.substring(1);
+				else if (i == (len-1)) normal = normal.substring(0, len - 1 ) + cBCypher;
+				else normal = normal.substring(0, i) + cBCypher + normal.substring(i+1);
 				break;
 				
 			} 
-			else if ( !(normal.charAt(i) == cA.charAt(0)) &&
-				!(normal.charAt(i) == cB.charAt(0)) )
-			{
-				msgAlterada = msgAlterada.concat
-					(String.valueOf( normal.charAt(i) ) );
-				break;
-			}
 		
 		}
 	}
-	return msgAlterada ;
+	return normal;
 }
 
 public static String uncypher (String normal, char[] uppercase, 
@@ -82,40 +75,34 @@ char[] lowercase, int keyindex)
 
 	final char[] casoAlto = uppercase;
 	final char[] casoBaixo = lowercase;
+	// cA será uma letra maiúscula a ser trocada por cAUncypher, com a cifra revertida
+	// cB será uma letra minúscula a ser trocada por cBUncypher, com a cifra revertida
 	String cA, cB, cAUncypher, cBUncypher; 
-	String msgAlterada = "";
+	int len = normal.length();
 	for (int i = 0; i < normal.length(); i++){
-		System.out.println("\nAgora estamos falando de: " 
-			+ normal.charAt(i) );
 		for (int v = 0; v < 26; v++){
 			cA = Character.toString( casoAlto[v] );
 			cAUncypher = Character.toString( casoAlto[ ( v + 
 				( 26 - keyindex) ) % 26 ] );
 			cB = Character.toString( casoBaixo[v] );
-			cBUncypher = Character.toString( casoAlto[ ( v + 
+			cBUncypher = Character.toString( casoBaixo[ ( v + 
 				( 26 - keyindex) ) % 26 ] );
 			
 			if ( normal.charAt(i) == cA.charAt(0) ){
-				msgAlterada = msgAlterada.concat(cAUncypher);
-				System.out.printf("%s -> %s \n", cA , cAUncypher);
-				System.out.println(msgAlterada);
+				if (i == 0) normal = cAUncypher + normal.substring(1);
+				else if (i == (len-1)) normal = normal.substring(0, len - 1) + cAUncypher;
+				else normal = normal.substring(0, i) + cAUncypher + normal.substring(i+1);
 				break;
 			}	
 			else if (normal.charAt(i) == cB.charAt(0) ) {
-				msgAlterada = msgAlterada.concat(cBUncypher);
-				System.out.printf("%s -> %s \n", cB , cBUncypher);
-				System.out.println(msgAlterada);
-				break;
-			} else if ( !(normal.charAt(i) == cB.charAt(0)) &&
-				!(normal.charAt(i) == cA.charAt(0)) )
-			{
-				msgAlterada = msgAlterada.concat
-					(String.valueOf( normal.charAt(i) ) );
+				if (i == 0) normal = cBUncypher + normal.substring(1);
+				else if (i == (len-1)) normal = normal.substring(0, len - 1 ) + cBUncypher;
+				else normal = normal.substring(0, i) + cBUncypher + normal.substring(i+1);
 				break;
 			}
 		}
 	}
-	return msgAlterada ;
+	return normal ;
 }
 
 }
