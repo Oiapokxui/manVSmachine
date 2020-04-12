@@ -1,0 +1,51 @@
+Ok, começamos a analisar o problema:
+Nos é dado uma matriz retangular N x M (Um Labirinto), onde inicialmente 
+cada elemento pode ser -1 ou 0.
+---------- -1 signifca que esse elemento é uma parede
+----------  0 siginifca que esse elemento é um corredor vazio
+
+Primeiro: É realizada a computação da matriz, com os seus 0s e -1s
+
+Segundo: É colocado o queijo em uma casa que tenha o valor zero
+
+Terceiro: A casa onde o queijo está localizado adquire valor 1
+
+Quatro: Todas as casas recebem um valor K acima de 1 de acordo com
+ sua distância (Só recebe o valor se existe um caminho sem paredes
+ da casa até o queijo). A marcação termina quando K é tal que 
+ nenhuma casa possa ser preenchida mais.
+
+	Primeiro: Seleciona-se a casa do queijo, com K = 1 e
+	 inicializa-se a variável de casa anterior com valor 
+	 'centro'
+
+	Segundo: Verifica quais casa adjacentes (Devem
+	 haver apenas 4: Cima, baixo, esquerda e direita) não
+	 são paredes e armazena numa lista as direções livres.
+	 Caso alguma casa adjacente possua a mesma direção que
+	 a casa anterior, não armazená-la na lista.
+	 Caso a casa possua mais de um caminho possível:
+	 	Caso seja a primeira bifurcação,
+		 salvá-la como 'Anterior'.
+		Caso a casa onde há bifurcação não seja
+		 a mesma armazenada em anterior: Salvar
+		 casa em 'Queue' e mover para casa armazenada
+		 em 'Anterior'
+	
+	Terceiro: Armazena a casa anterior em 'Anterior' e
+	 Seleciona uma das direções possíveis de acordo com uma 
+	 ordem predeterminada (Sentido horário começando por cima):
+	 Caso alguma das direções já tenha sido percorrida, escolher
+	 próxima de acordo com a ordem.
+	 Caso CONTRÁRIO: Escolher de acordo com a ordem, a primeira
+	 direção.
+	 Caso, além da casa anterior, todas as casas forem paredes:
+	 Retornar à última bifurcação (Queue) e executar esse passo
+	 novamente.
+
+	Quarto: Armazena, como forma de indicar direção, qual o
+	 sentido da casa anterior.
+
+	Quinto: A casa agora vale K+1
+
+	Sexto: 
