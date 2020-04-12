@@ -3,6 +3,7 @@ class ChessesLab {
 	static int[][] matriz = new int[6][11];	
 	static int posX = -1;
 	static int posY = -1;
+	ArrayList<Integer> queue = new ArrayList<Integer>();	
 
 	public static void main(String[] args){
 	}
@@ -73,9 +74,14 @@ class ChessesLab {
 		return anterior;	
 	}
 	
-	static int[] queue (int xProx, int yProx){
-		int[] queue = { xProx , yProx};
-		return queue;	
+	static void addQueue (int xProx, int yProx){
+		queue.add(xProx);
+		queue.add(yProx);
+	}
+
+	static void removeQueue() {
+        	queue.remove(0);
+        	queue.remove(1);
 	}
 
 }
