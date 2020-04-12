@@ -3,8 +3,8 @@ class ChessesLab {
 	static int[][] matriz = new int[6][11];	
 	static int posX = -1;
 	static int posY = -1;
-	public static void main(String[] args){
 
+	public static void main(String[] args){
 	}
 
 	public void matriz() {
@@ -41,63 +41,25 @@ class ChessesLab {
 		if (char == 'l') posX--;
 		if (char == 'r') posX++;
 	}
-	
+
+	// Este verifica quantas ramificacoes a casa possui,
+	// retorna uma ArrayList com as ramificacoes 
+	// ( 'u' = ramo acima, 'b' = ramo abaixo
+	// 'r' = ramo à esquerda, 'l' = ramo à direita)
+
 	static ArrayList<Character> bifurcacao (){ 
 		ArrayList<Character> bifurca = new ArrayList<Character>(); 
-		boolean up_left = posX == 0 && posY == 0; 
-		boolean up_right = posX == 10 && posY == 0; 
-		boolean down_left = posX == 0 && posY == 5;
-		boolean down_right = posX == 10 && posY == 5;
-		boolean meioX = posX > 0 && posX < 10;
-		boolean meioY = posY > 0 && posY < 5;
-		boolean leftColumn = posX == 0 && meioY;
-		boolean rightColumn = posX == 10 && meioY;
-		boolean downColumn = posY == 5 && meioX;
-		boolean upColumn = posY == 0 && meioX;	
-		if (meioY && meioX) {
-			if ( matriz[posX+1][posY] != -1 ) bifurca.add('r');
-			if ( matriz[posX-1][posY] != -1 ) bifurca.add('l');
-			if ( matriz[posX][posY+1] != -1 ) bifurca.add('u');
-			if ( matriz[posX][posY-1] != -1 ) bifurca.add('d');	
-		}
-		if (up_right) {
-			if ( matriz[posX-1][posY] != -1 ) bifurca.add('l');
-			if ( matriz[posX][posY-1] != -1 ) bifurca.add('d');	
-		}
-		if (up_left) {
-			if ( matriz[posX+1][posY] != -1 ) bifurca.add('r');
-			if ( matriz[posX][posY-1] != -1 ) bifurca.add('d');	
-		}
-		if (down_right) {
-			if ( matriz[posX-1][posY] != -1 ) bifurca.add('l');
-			if ( matriz[posX][posY+1] != -1 ) bifurca.add('u');	
-		}
-		if (down_left) {
-			if ( matriz[posX+1][posY] != -1 ) bifurca.add('r');
-			if ( matriz[posX][posY+1] != -1 ) bifurca.add('u');
-		}
-		if (rightColumn) {
-			if ( matriz[posX-1][posY] != -1 ) bifurca.add('l');
-			if ( matriz[posX][posY+1] != -1 ) bifurca.add('u');     			if ( matriz[posX][posY-1] != -1 ) bifurca.add('d');	
-		}
-		if (leftColumn) {
-			if ( matriz[posX+1][posY] != -1 ) bifurca.add('r');
-			if ( matriz[posX][posY+1] != -1 ) bifurca.add('u');
-			if ( matriz[posX][posY-1] != -1 ) bifurca.add('d');	
-		}
-		if (downColumn) {
-			if ( matriz[posX+1][posY] != -1 ) bifurca.add('r');
-			if ( matriz[posX][posY+1] != -1 ) bifurca.add('u');
-			if ( matriz[posX-1][posY] != -1 ) bifurca.add('l');
-		}
-		if (rightColumn) {
-			if ( matriz[posX+1][posY] != -1 ) bifurca.add('r');
-			if ( matriz[posX][posY-1] != -1 ) bifurca.add('d');
-			if ( matriz[posX-1][posY] != -1 ) bifurca.add('l');
-		}
+		boolean leftColumn = posX == 0 ;
+		boolean rightColumn = posX == 10 ;
+		boolean downColumn = posY == 5 ;
+		boolean upColumn = posY == 0 ;	
+		if (!leftColumn) bifurca.add('l');
+		if (!rightColumn) bifurca.add('r');
+		if (!downColumn) bifurca.add('d');
+		if (!upColumn) bifurca.add('u');
 		return bifurca;
 	}
-	
+		
 	static int[] queijo (int xQueijo, int yBacon){
 		matriz[xQueijo][yBacon] = 1;
 		int[] queijo = new int[2];
@@ -110,7 +72,7 @@ class ChessesLab {
 		int[] anterior = { xAnt ; yAnt};
 		return anterior;	
 	}
-
+	
 	static int[] queue (int xProx, int yProx){
 		int[] queue = { xProx , yProx};
 		return queue;	
