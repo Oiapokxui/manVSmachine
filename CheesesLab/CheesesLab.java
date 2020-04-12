@@ -7,20 +7,22 @@ class CheesesLab {
 
 	public static void main(String[] args){
 		int[] cheese = queijo (10, 5);
+		int[] rato = {0 , 0};
 		posAtual (cheese);
 		char[] vizinhos = bifurcacao();
 
 		for (char i : vizinhos){
-			int[] prox = mover(i);
-			addQueue(cheese, prox);
+			addQueue(cheese, i);
 		}
+		
+		fillMatrix();
 
-		while ( !queue.isEmpty() ){
-				
-		}
+		int passosTotais = menorCaminho(rato);
+		System.out.printf("O rato andou %d casas para chegar ao queijo!", 
+				passosTotais);
 	}
 
-	public void matriz() {
+	static void matriz() {
 		for (int i = 0; i<5; i++){
 			for (int v = 0; v <10 ; v++){
 				matriz[i][v] = 0;
@@ -55,12 +57,12 @@ class CheesesLab {
 
 	static int[]  mover (char direcao){
 		int[] coordenada = new int [2];
-		x = posX;
-		y = posY;
-		if (char == 'u') y++;
-		if (char == 'd') y--;
-		if (char == 'l') x--;
-		if (char == 'r') x++;
+		int x = posX;
+		int y = posY;
+		if (direcao == 'd') y++;
+		if (direcao == 'u') y--;
+		if (direcao == 'l') x--;
+		if (direcao == 'r') x++;
 		coordenada[0] = x; 
 		coordenada[1] = y;               
 		return coordenada;
@@ -72,7 +74,6 @@ class CheesesLab {
 	// 'r' = ramo à esquerda, 'l' = ramo à direita)
 
 	static char[] bifurcacao (){ 
-
 		ArrayList<Character> bifurca = new ArrayList<Character>(); 
 
 		boolean leftColumn = posX == 0 ;
@@ -84,25 +85,25 @@ class CheesesLab {
 		if (!rightColumn) bifurca.add('r');
 		if (!downColumn) bifurca.add('d');
 		if (!upColumn) bifurca.add('u');
-		char[] b = bifurca.toArray();
 
-		return b;
-
+		return converte(bifurca);
 	}
 		
+
+	static char[] converte (ArrayList<Character> lista){
+		char[] arr = new char [lista.size()];
+		for (int i = 0; i < lista.size() ; i++){
+			arr[i] = lista.get(i);
+		}
+		return arr;
+	}
+
 	static int[] queijo (int xQueijo, int yBacon){
 		matriz[xQueijo][yBacon] = 1;
 		int[] queijo = new int[2];
 		queijo[0] = xQueijo;
-		queijo[1] = yQueijo;	
+		queijo[1] = yBacon;	
 		return queijo;
-	}
-	
-	static int[] anterior (int xAnt, int yAnt){
-
-		int[] anterior = { xAnt ; yAnt};
-		return anterior;	
-
 	}
 	
 	static void addQueue (int[] origem, char direcao){
@@ -113,6 +114,60 @@ class CheesesLab {
 	static void removeQueue() {
         	queue.remove(0);
         	queue.remove(1);
+	}
+	
+	static void fillMatrix(){
+		int k ;
+		while ( !queue.isEmpty() ){            	
+        		int[] origem = queue.get(0);
+        		int[] destino = queue.get(1);
+        		posAtual(origem);
+        		k = matriz[posX][posY];
+        		posAtual(destino);
+//			System.out.printf("x: %d y: %d\n", posX, posY);
+        		matriz[posX][posY] = k + 1;
+        		char[] vizinhos = bifurcacao();
+        		for (char i : vizinhos){
+                        	addQueue(destino, i);
+        		}
+        		removeQueue();
+        	}
+	}
+
+	static int menorCaminho(int[] coordRato){
+		int menorK;
+		int passos = 0;
+		posAtual( coordRato );
+		menorK = matriz[posX][posY];
+		while (menorK != 1){
+			char[] caminhos = bifurcacao(); 
+			char proxCasa = melhorCaminho(caminhos);
+			posAtual( mover(proxCasa) );
+			passos++;
+			menorK--;
+		}
+
+		return passos;
+	}
+
+	static char melhorCaminho(char[] possiveis){
+		char menorDir = 'q';
+		int menor = Integer.MAX_VALUE;
+		int[] kPossiveis = new int [possiveis.length];
+		if (possiveis.length > 0)  {
+			for (int i = 0; i < possiveis.length; i++){
+				int[] xOy = mover(possiveis[i]);
+				int atual = matriz[ xOy[0] ][ xOy[1] ];
+				if (menor > atual) {
+					menor = atual;
+					menorDir = possiveis[i];
+				}
+				
+			}
+			return menorDir;
+		} else {
+			return 'e';
+		}
 	}
 
 }
