@@ -18,9 +18,13 @@ class CheesesLab {
 		
 		fillMatrix();
 		
-		int passosTotais = menorCaminho(rato);
-		System.out.printf("O rato andou %d casas para chegar ao queijo!\n",			passosTotais);
-	
+		int passosTotais = matriz[ rato[0] ][ rato[1] ]; 
+		if ( passosTotais > 0 ) {
+			System.out.printf("O rato andou %d casas para chegar" + 
+					" ao queijo!\n",passosTotais);
+		} else {
+			System.out.println("Nao é possivel chegar ao queijo. :c");
+		}
 	}
 
 	static void matriz() {
@@ -104,7 +108,6 @@ class CheesesLab {
 		return converte(bifurca);
 	}
 		
-
 	static char[] converte (ArrayList<Character> lista){
 		char[] arr = new char [lista.size()];
 		for (int i = 0; i < lista.size() ; i++){
@@ -135,16 +138,10 @@ class CheesesLab {
 		int k ;
 		while ( !queue.isEmpty() ){            	
         		int[] origem = queue.get(0);
-			//System.out.printf("Origem x: %d y: %d\n", origem[0],
-			//	       	origem[1]);
         		int[] destino = queue.get(1);
-			//System.out.printf("Destino x: %d y: %d\n", destino[0],
-			//	       	destino[1]);
         		posAtual(origem);
         		k = matriz[posX][posY];
-			//System.out.println("K de origem: " + k);
         		posAtual(destino);
-			//	System.out.println("Add +1 p/ :" + k);
         		matriz[posX][posY] = k + 1;
         		char[] vizinhos = bifurcacao();
         		for (char i : vizinhos){
@@ -152,42 +149,6 @@ class CheesesLab {
         		}
 			removeQueue();
         	}
-	}
-
-	static int menorCaminho(int[] coordRato){
-		int menorK;
-		int passos = 1;
-		posAtual( coordRato );
-		menorK = matriz[posX][posY];
-		while (menorK != 1){
-			char[] caminhos = bifurcacao(); 
-			char proxCasa = melhorCaminho(caminhos);
-			posAtual( mover(proxCasa) );
-			passos++;
-			menorK--;
-		}
-
-		return passos;
-	}
-
-	static char melhorCaminho(char[] possiveis){
-		char menorDir = 'q';
-		int menor = Integer.MAX_VALUE;
-		int[] kPossiveis = new int [possiveis.length];
-		if (possiveis.length > 0)  {
-			for (int i = 0; i < possiveis.length; i++){
-				int[] xOy = mover(possiveis[i]);
-				int atual = matriz[ xOy[0] ][ xOy[1] ];
-				if (menor > atual) {
-					menor = atual;
-					menorDir = possiveis[i];
-				}
-				
-			}
-			return menorDir;
-		} else {
-			return 'e';
-		}
 	}
 
 }
