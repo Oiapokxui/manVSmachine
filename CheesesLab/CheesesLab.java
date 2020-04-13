@@ -6,6 +6,7 @@ class CheesesLab {
 	static ArrayList<int[]> queue = new ArrayList<int[]>();	
 
 	public static void main(String[] args){
+		matriz();
 		int[] cheese = queijo (10, 5);
 		int[] rato = {0 , 0};
 		posAtual (cheese);
@@ -16,38 +17,39 @@ class CheesesLab {
 		}
 		
 		fillMatrix();
-
+		
 		int passosTotais = menorCaminho(rato);
-		System.out.printf("O rato andou %d casas para chegar ao queijo!\n", 
-				passosTotais);
+		System.out.printf("O rato andou %d casas para chegar ao queijo!\n",			passosTotais);
+	
 	}
 
 	static void matriz() {
-		for (int i = 0; i<5; i++){
-			for (int v = 0; v <10 ; v++){
-				matriz[i][v] = 0;
-			}
-		}
-		matriz[0][2] = -1;
-		matriz[0][3] = -1;
+		/*		for (int i = 0; i<5; i++){
+					for (int v = 0; v <10 ; v++){
+						matriz[i][v] = 0;
+					}
+				}
+		*/
+		matriz[2][0] = -1;
+		matriz[3][0] = -1;
 		matriz[1][1] = -1;
-		matriz[1][4] = -1;
-		matriz[1][6] = -1;
-		matriz[1][8] = -1;
-		matriz[1][9] = -1;
+		matriz[4][1] = -1;
+		matriz[6][1] = -1;
+		matriz[8][1] = -1;
+		matriz[9][1] = -1;
 		matriz[2][2] = -1;
-		matriz[2][4] = -1;
-		matriz[2][6] = -1;
-		matriz[2][10] = -1;
-		matriz[3][1] = -1;
+		matriz[4][2] = -1;
+		matriz[6][2] = -1;
+		matriz[10][2] = -1;
+		matriz[1][3] = -1;
 		matriz[3][3] = -1;
-		matriz[3][7] = -1;
-		matriz[3][8] = -1;
-		matriz[4][3] = -1;
-		matriz[4][5] = -1;
-		matriz[4][9] = -1;
-		matriz[5][1] = -1;
-		matriz[5][8] = -1;
+		matriz[7][3] = -1;
+		matriz[8][3] = -1;
+		matriz[3][4] = -1;
+		matriz[5][4] = -1;
+		matriz[9][4] = -1;
+		matriz[1][5] = -1;
+		matriz[8][5] = -1;
 	}
 
 	static void posAtual(int[] coord){
@@ -125,31 +127,36 @@ class CheesesLab {
 	}
 
 	static void removeQueue() {
-        	queue.remove(0);
-        	if (queue.size() > 1) queue.remove(1);
-		else if (queue.size() == 1) queue.remove(0);
+		queue.remove(1);
+		queue.remove(0);
 	}
 	
 	static void fillMatrix(){
 		int k ;
 		while ( !queue.isEmpty() ){            	
         		int[] origem = queue.get(0);
+			//System.out.printf("Origem x: %d y: %d\n", origem[0],
+			//	       	origem[1]);
         		int[] destino = queue.get(1);
+			//System.out.printf("Destino x: %d y: %d\n", destino[0],
+			//	       	destino[1]);
         		posAtual(origem);
         		k = matriz[posX][posY];
+			//System.out.println("K de origem: " + k);
         		posAtual(destino);
+			//	System.out.println("Add +1 p/ :" + k);
         		matriz[posX][posY] = k + 1;
         		char[] vizinhos = bifurcacao();
         		for (char i : vizinhos){
                         	addQueue(destino, i);
         		}
-        		removeQueue();
+			removeQueue();
         	}
 	}
 
 	static int menorCaminho(int[] coordRato){
 		int menorK;
-		int passos = 0;
+		int passos = 1;
 		posAtual( coordRato );
 		menorK = matriz[posX][posY];
 		while (menorK != 1){
