@@ -3,40 +3,64 @@ import java.util.*;
 
 public class Main {
 	public static void main(String[] args) {
-		// neuron é um vetor unidimensional que
-		// representa os 9 neuronios da rede.
-		int[][] neuron = new int[1][9];
-		int bias = -5;
+		// redeNeural é um arranjo de vetores.
+		// Dá um atalho para os atalhos dos arranjos
+		// dos neuronios i da rede. Onde i eh 
+		// o indice da linha.
+		int[][][] redeNeural = new int[2][15][1];
+		int[][] neuronA0 = new int[15][1];
+		redeNeural[0] = neuronA0;
+		// Estes sao os valores de bias para os neuronios
+		// respectivos aos dígitos
+		// 1, 2, 3, 4, 5, 6, 7, 8, 9, 0. 
+		int[][] bias = {
+				{6},
+				{1},
+				{0},
+				{2},
+				{0},
+				{-1},
+				{3},
+				{-2},
+				{-1},
+				{-1}
+			};
+		 
 		Scanner scan = new Scanner(System.in);
 		System.out.println("Input grid: ");
-		String linha1 = scan.nextLine();
-		String linha2 = scan.nextLine();
-		String linha3 = scan.nextLine();
-		for (int i = 0; i < 9; i++){
-			if (i < 3){
-			       	neuron[0][i] = (linha1.charAt(i) == 'X')?
-					1 : 0;
-			}
-			else if (i > 2 && i < 6){
-			       	neuron[0][i] = (linha2.charAt(i%3) == 'X')?
-					1 : 0;
-			}
-			else if (i > 5 && i < 9){
-			       	neuron[0][i] = (linha3.charAt(i%3) == 'X')?
-					1 : 0;
+		String[] linha = new String[5];
+		int h = 0; 
+		for (int i = h; i < 5; i++) {
+			linha[i] = scan.nextLine();
+			for (int v = 0; v < 3; v++){ 
+				neuronA0[h][0] = (linha[i].charAt(v) == 'X')?
+					1 : -1;
+				h++;
 			}
 		}
-		// Por enquanto, todos os pesos foram fornecidos
-		int[][] pesos = {{2},{1},{2},{4},{-4},{4},{2},{-1},{2}}; 
-		int[][] a10 = multiMatriz(neuron, pesos);
-		a10[0][0] += bias;
+		 	
+		// Cada linha dessa matriz representa os pesos
+		// do n-esimo neuronio da camada 1.
+		// pesos é um int[10][15] e estão distribuidos
+		// da seguinte maneira, de acordo com a linha:
+		// 1, 2, 3, 4, 5, 6, 7, 8, 9, 0
+		int[][] pesos = {
+			{-1,1,-1,-1,1,-1,-1,1,-1,-1,1,-1,-1,1,-1},
+			{1,1,1,-1,-1,1,1,1,1,1,-1,-1,1,1,1},
+			{1,1,1,-1,-1,1,1,1,1,-1,-1,1,1,1,1},
+			{1,-1,1,1,-1,1,1,1,1,-1,-1,1,-1,-1,1},
+			{1,1,1,1,-1,-1,1,1,1,-1,-1,1,1,1,1},
+			{1,1,1,1,-1,-1,1,1,1,1,-1,1,1,1,1},
+			{1,1,1,-1,-1,1,-1,-1,1,-1,-1,1,-1,-1,1},
+			{1,1,1,1,-1,1,1,1,1,-1,-1,1,1,1,1},
+			{1,1,1,1,-1,1,1,1,1,-1,-1,1,1,1,1},
+			{1,1,1,1,-1,1,1,-1,1,1,-1,1,1,1,1}
+		} ;
+		int[][] neuronA1 = multiMatriz (pesos, neuronA0);	 
+		somaMatriz (neuronA1, bias);
 		 
-		System.out.print("This number is: ");
-		if (a10[0][0] >= 0){
-			System.out.println("0");
-		} else {
-			System.out.println("1");
-		}
+		System.out.println();
+		System.out.println("This number is: " + chosenNeuron(neuronA1));
 	}
 	 
 	static int[][] multiMatriz(int[][] m1, int[][] m2){
@@ -57,4 +81,25 @@ public class Main {
 		}
 		return Resultante;
 	}
+
+	static void somaMatriz(int[][] m1, int[][] m2){
+		for (int i = 0; i < m1.length; i++){
+			for (int v = 0; v < m1[0].length ; v++){
+				m1[i][v] += m2[i][v];
+			}
+		}
+	}
+	 
+	static int chosenNeuron (int[][] n){
+		int maxInd = 0;
+		for (int i = 0; i < n.length ; i++){
+			for (int v = 0; v < n[0].length ; v++){
+				System.out.printf("Numero: %d", (i+1)%10);
+				System.out.printf(" Ativacao: %d\n", n[i][0]);
+				if (n[maxInd][0] < n[i][0]) maxInd = i;
+			}
+		}
+		return (maxInd + 1)% 10;
+	}
+	
 }
